@@ -1,8 +1,11 @@
 {
-  "name": "facebook-messenger-dev-setup",
+  "name": "facebook-messenger-devkit",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Setup for rapid development of bots for Facebook Messenger.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=5.10.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,6 +17,7 @@
   ],
   "author": "@olegakbarov",
   "license": "MIT",
+  "repository": "git@github.com:olegakbarov/facebook-messenger-devkit.git",
   "dependencies": {
     "eventsource": "^0.2.1",
     "express": "^4.14.0"

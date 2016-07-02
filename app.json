@@ -1,0 +1,7 @@
+{
+  "name": "Facebook Messenger DevKit",
+  "description": "Setup for rapid development for FMB",
+  "repository": "https://github.com/olegakbarov/facebook-messenger-devkit",
+  "logo": "http://seeklogo.com/images/F/facebook-messenger-logo-1B1179FB01-seeklogo.com.png",
+  "keywords": ["node", "facebook", "messenger", "bot"]
+}

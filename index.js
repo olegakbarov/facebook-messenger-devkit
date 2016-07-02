@@ -1,10 +1,12 @@
 /* eslint-env node */
 'use strict';
 
-const EventSource require('eventsource');
+const EventSource = require('eventsource');
 
-const EVENTSOURCE_API = ''; //INSERT YOUR ENDPOINT HERE
-const source = new EventSource(EVENTSOURCE_API);
+const HEROKU_APP_URL = 'https://devkit-test.herokuapp.com';
+
+const endpoint = `${HEROKU_APP_URL}/eventsource`; //INSERT YOUR ENDPOINT HERE
+const source = new EventSource(endpoint);
 
 source.addEventListener('error', e => {
   if (e.readyState === EventSource.CLOSED) {
@@ -20,17 +22,15 @@ source.addEventListener('open', e => {
 
 // event must be called msg on remote too
 source.addEventListener('msg', data => {
-  // Iterate over each entry (may be multiple if batched)
-  log.info('[index] on msg', data);
-
   let parsedData = null;
   try {
     parsedData = JSON.parse(data.data);
   } catch (err) {
-    log.error(err);
+    console.log(err);
   }
 
   if (parsedData) {
+    // Iterate over each entry (may be multiple if batched)
     parsedData.entry.forEach(pageEntry => {
       pageEntry.messaging.forEach(messagingEvent => {
         if (messagingEvent.optin) {
