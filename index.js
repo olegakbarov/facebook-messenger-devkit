@@ -3,9 +3,9 @@
 
 const EventSource = require('eventsource');
 
-const HEROKU_APP_URL = 'https://devkit-test.herokuapp.com';
+const HEROKU_APP_URL = 'https://devkit-test.herokuapp.com'; //INSERT YOUR ENDPOINT HERE
 
-const endpoint = `${HEROKU_APP_URL}/eventsource`; //INSERT YOUR ENDPOINT HERE
+const endpoint = `${HEROKU_APP_URL}/eventsource`;
 const source = new EventSource(endpoint);
 
 source.addEventListener('error', e => {
