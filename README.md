@@ -1,3 +1,5 @@
+![DevKit](https://octodex.github.com/images/yaktocat.png)
+
 # Facebook Messenger DevKit
 
 ##### What?
@@ -26,7 +28,7 @@ You'd better get rid of `eventsource` proxy in production. It's trival task and 
 
 4. Go to your Facebook app settings and navigate to `Webhook` tab
 
-5. Add your newly created heroku app as webhook 
+5. Add your newly created heroku app as webhook
 
 4. Set up `MESSENGER_VALIDATION_TOKEN` in Heroku Dashboard under Settings tab (you need to click 'Reveal Config Vars')
 
