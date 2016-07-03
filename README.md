@@ -1,4 +1,4 @@
-![DevKit](https://octodex.github.com/images/yaktocat.png)
+![DevKit](https://raw.githubusercontent.com/olegakbarov/facebook-messenger-devkit/master/logo.png)
 
 # Facebook Messenger DevKit
 
