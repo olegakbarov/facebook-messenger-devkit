@@ -1,4 +1,5 @@
 /* eslint-env node */
+/* eslint-disable no-console */
 'use strict';
 
 const EventEmitter = require('events');
@@ -13,11 +14,13 @@ app.set('port', process.env.PORT || 3000);
 
 app.get('/', (req, res) => {
   res.send('this works as expected!');
-})
+});
 
 app.get('/webhook', (req, res) => {
-  if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === process.env.MESSENGER_VALIDATION_TOKEN) {
+  if (
+    req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === process.env.MESSENGER_VALIDATION_TOKEN
+  ) {
     console.log('[server.js] Validating webhook!');
 
     res.status(200).send(req.query['hub.challenge']);
@@ -29,15 +32,17 @@ app.get('/webhook', (req, res) => {
 
 class SSE extends EventEmitter {}
 const proxyEmitter = new SSE();
-proxyEmitter.setMaxListeners(1);
+proxyEmitter.setMaxListeners(10);
 
 app.post('/webhook', (req, res) => {
-  // if (data.object === 'page') {
-    proxyEmitter.emit('msg', req);
+  const data = req.body;
+
+  if (data.object === 'page') {
+    proxyEmitter.emit('msg', data);
 
     // timeout here = 20sec
     res.sendStatus(200);
-  // }
+  }
 });
 
 // forward messages down to subscribed clients
@@ -45,18 +50,21 @@ app.get('/eventsource', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control':'no-cache',
-    'Connection': 'keep-alive'
+    Connection: 'keep-alive'
   });
+
   console.log('Client connected to eventsoruce');
 
-  // workaround for Heroku: https://devcenter.heroku.com/articles/request-timeout
   setInterval(() => {
     res.write('ping \n\n');
   }, 1000);
 
+
   proxyEmitter.on('msg', data => {
     res.write(`event:msg\ndata: ${JSON.stringify(data)}\n\n`);
   });
+
+  // console.log(res.socket);
 
   res.socket.on('close', () => {
     console.log('Client has left');
@@ -71,18 +79,16 @@ app.all('/*', (req, res) => {
 });
 
 function verifyRequestSignature(req, res, buf) {
-  var signature = req.headers["x-hub-signature"];
+  var signature = req.headers['x-hub-signature'];
 
   if (!signature) {
-    // For testing, let's log an error. In production, you should throw an
-    // error.
     console.error("Couldn't validate the signature.");
   } else {
-    var elements = signature.split('=');
-    var method = elements[0];
-    var signatureHash = elements[1];
+    const elements = signature.split('=');
+    const method = elements[0];
+    const signatureHash = elements[1];
 
-    var expectedHash = crypto.createHmac('sha1', APP_SECRET)
+    let expectedHash = crypto.createHmac('sha1', process.env.APP_SECRET)
                         .update(buf)
                         .digest('hex');
 
@@ -92,4 +98,4 @@ function verifyRequestSignature(req, res, buf) {
   }
 }
 
-app.listen(process.env.PORT || 5000)
+app.listen(process.env.PORT || 5000);
