@@ -14,11 +14,11 @@ app.get('/', (req, res) => {
 app.get('/webhook', (req, res) => {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === process.env.MESSENGER_VALIDATION_TOKEN) {
-    log.info('[src/app] Validating webhook!');
+    console.log('[server.js] Validating webhook!');
 
     res.status(200).send(req.query['hub.challenge']);
   } else {
-    log.info('[src/app] Error. Make sure the validation tokens match.');
+    console.log('[server.js] Error. Make sure the validation tokens match.');
     res.sendStatus(403);
   }
 });
