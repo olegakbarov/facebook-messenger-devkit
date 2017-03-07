@@ -28,10 +28,8 @@ const proxyEmitter = new SSE();
 proxyEmitter.setMaxListeners(1);
 
 app.post('/webhook', (req, res) => {
-  const data = req.body;
-  // Make sure this is a page subscription
   if (data.object === 'page') {
-    proxyEmitter.emit('msg', data);
+    proxyEmitter.emit('msg', req);
 
     // timeout here = 20sec
     res.sendStatus(200);
